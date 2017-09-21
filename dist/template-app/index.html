@@ -83,7 +83,7 @@
 
               <p>If you exported your listings from a remote server or VPS, copy it to the machine you are running this app from.</p>
 
-              <div id="error-listings-imported"></div>
+              <div id="error-listings-imported" class="form-error"></div>
               <div id="listings-imported"></div>
 
 
@@ -99,6 +99,11 @@
                 <div class="pure-u-1-2">
                   <label for="port">Port Number</label>
                   <input type="text" id="ob2-port" name="port" class="pure-u-8-24" value="4002"/>
+                </div>
+                <div class="pure-u-1-2">
+                  <label for="ob2-ssl">SSL
+                    <input type="checkbox" id="ob2-ssl" name="ob2-ssl" class="pure-u-8-24"/>
+                  </label>
                 </div>
               </div>
                 <button id="js-import-listings" class="btn btn-primary">Import</button>

@@ -44,6 +44,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var port = document.querySelector('#port').value || '18469';
     var ssl = document.querySelector('#ssl').checked;
 
+    if(port > 65536 || port < 0 || isNaN(port)) {
+      document.getElementById('error-listings-processed').innerHTML = "Port must be a number between 0 and 65536";
+      return;
+    }
+
     var options = {
       host: ip,
       protocol: (ssl) ? "https:" : "http:",
@@ -93,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   })
 
-  function processCSV() {
+  function processCSV(csvfile) {
 
     rmdirSyncForce = function(path) {
       var files, file, fileStats, i, filesLength;
@@ -120,18 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
       fs.rmdirSync(path);
     };
 
-    // Create processing directory
-    var processed_dir = csv_directory + "/processed";
-    rmdirSyncForce(processed_dir);
-    mkdirp(processed_dir, function (err) {
-        if (err) {
-          console.error(err);
-        } else {
-          console.log('Processed folder created');
-        }
-    });
-
-
     function normalize_condition(condition) {
       switch(condition) {
         case "New":
@@ -149,8 +142,20 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    //var stream = fs.createReadStream(csv_directory + "/listings.csv")
-    var stream = fs.createReadStream(os.homedir() + "/Desktop/.openbazaar/listings.csv")
+    // Create processing directory
+    var processed_dir = "processed";
+    if (fs.existsSync(processed_dir)) {
+      rmdirSyncForce(processed_dir);
+    }
+    mkdirp(processed_dir, function (err) {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('Processed folder created');
+        }
+    });
+
+    var stream = fs.createReadStream(csvfile)
       .pipe(csv.parse({headers: true}))
       .pipe(csv.format({headers: true}))
       .transform(function(row) {
@@ -182,40 +187,29 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .on("data", function(data){
         active_line++;
-        document.getElementById('listings-processed').innerHTML = active_line + " listings processed";
+        document.getElementById('listings-imported').innerHTML = active_line + " listings processed";
       })
-      .on("end", function(){
-
-           // Split listings file into chunked files
-           csvSplitStream.split(
-             fs.createReadStream(csv_directory + "/listings.processed.csv"),
-             {
-               lineLimit: 50000
-             },
-             (index) => fs.createWriteStream(csv_directory + `/processed/processed-${index}.csv`)
-           )
-           .then(csvSplitResponse => {
-             console.log('Splitting files succeeded', csvSplitResponse);
-           }).catch(csvSplitError => {
-             console.log('Splitting files failed!', csvSplitError);
-           });
-
-      })
-      .pipe(fs.createWriteStream(csv_directory + "/listings.processed.csv"))
+      .pipe(fs.createWriteStream("processed/listings.processed.csv"))
   }
 
-  document.querySelector('#js-import-listings2').addEventListener('click', function (event) {
+  document.querySelector('#js-import-listings').addEventListener('click', function (event) {
 
     document.getElementById('listings-processed').innerHTML = "";
+    document.getElementById('listings-imported').innerHTML = "";
+    document.getElementById('error-listings-imported').innerHTML = "";
+    document.getElementById('error-listings-processed').innerHTML = "";
+
+    var csvfile = document.getElementById("csv-file").files[0].path;
+    console.log("File:", csvfile);
 
     // Move on to process the CSV
-    processCSV();
+    //processCSV(csvfile);
 
     // Import into OpenBazaar 2.0
     var ob2_ip = document.querySelector('#ob2-ip-address').value || '127.0.0.1';
     var ob2_port = document.querySelector('#ob2-port').value || 4002;
 
-    fs.readdir(csv_directory + "/processed", function(err, files) {
+    fs.readdir("processed", function(err, files) {
 
       var csv_files = [];
       files.forEach( function(file, index) {
@@ -225,25 +219,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
       function importFiles(file) {
 
+        document.getElementById('listings-imported').innerHTML = "Importing listings...";
+
         var formData = {
-          file: fs.createReadStream(csv_directory + "/processed/" + file)
+          file: fs.createReadStream("processed/" + file)
         }
+
+        var proto = (document.querySelector('#ob2-ssl').checked) ? 'https://' : 'http://';
 
         request.post({
            headers: {'content-type' : 'multipart/form-data'},
-           url:     'http://'+ob2_ip+':'+ob2_port+'/ob/importlistings',
+           url: proto + ob2_ip + ':' + ob2_port + '/ob/importlistings',
            formData: formData
          }, function(error, response, body){
-           if(csv_files.length > 0)
-            importFiles(csv_files.pop());
+           // Handle errors
+           if(error) {
+             console.log(error);
+             document.getElementById('listings-imported').innerHTML = "";
+             document.getElementById('error-listings-imported').innerHTML = error;
+           } else {
+             if(csv_files.length > 0) {
+               importFiles(csv_files.pop());
+             } else {
+               document.getElementById('listings-imported').innerHTML = "Listings import completed";
+             }
+           }
+
          });
       }
       importFiles(csv_files.pop());
 
-      document.getElementById('listings-imported').innerHTML = "Listings import completed";
-
      });
-
   });
-
 });

@@ -23,13 +23,13 @@ app.on('window-all-closed', function() {
 app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 768,
-    height: 1024,
-    'min-width': 500,
-    'min-height': 200,
+    width: 1024,
+    height: 768,
+    minWidth: 1024,
+    minHeight: 768,
     'accept-first-mouse': true,
     'title-bar-style': 'hidden',
-    show: false
+    show: false,
   });
 
   // and load the index.html of the app.
