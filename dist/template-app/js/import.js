@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var active_line = 0;
   var header = "";
 
+  console.log(platform);
   switch(platform) {
     case 'darwin':
       var csv_directory = os.homedir() + "/Library/Application Support/OpenBazaar";
@@ -196,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
       .pipe(fs.createWriteStream(csv_directory + "/listings.processed.csv"))
   }
 
-  document.querySelector('#js-import-listings').addEventListener('click', function (event) {
+  document.querySelector('#js-import-listings2').addEventListener('click', function (event) {
 
     document.getElementById('listings-processed').innerHTML = "";
 

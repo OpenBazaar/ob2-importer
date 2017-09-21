@@ -1,6 +1,7 @@
-var remote = require('remote')
-var Menu = remote.require('menu')
-var MenuItem = remote.require('menu-item')
+const { remote } = require('electron')
+const {Menu, MenuItem} = remote
+// var Menu = remote.require('menu')
+// var MenuItem = remote.require('menu-item')
 
 // Build our new menu
 var menu = new Menu()
@@ -22,6 +23,6 @@ menu.append(new MenuItem({
 // Add the listener
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('.js-context-menu').addEventListener('click', function (event) {
-    menu.popup(remote.getCurrentWindow());    
+    menu.popup(remote.getCurrentWindow());
   })
 })

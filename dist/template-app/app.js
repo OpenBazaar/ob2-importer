@@ -1,9 +1,13 @@
-var app = require('app');  // Module to control application life.
-var BrowserWindow = require('browser-window');  // Module to create native browser window.
+const { app, BrowserWindow, ipcMain } = require('electron');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null;
+
+ipcMain.on('import-from-ob1-submission', function (event, csvfile, ip, port) {
+    console.log('test');
+    console.log(csvfile, ip, port);
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
@@ -24,14 +28,19 @@ app.on('ready', function() {
     'min-width': 500,
     'min-height': 200,
     'accept-first-mouse': true,
-    'title-bar-style': 'hidden'
+    'title-bar-style': 'hidden',
+    show: false
   });
 
   // and load the index.html of the app.
-  mainWindow.loadUrl('file://' + __dirname + '/index.html');
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
+
+  mainWindow.once('ready-to-show', () => mainWindow.show());
 
   // Open the DevTools.
   mainWindow.openDevTools();
+
+
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
