@@ -6,6 +6,7 @@ var fs = require('fs');
 var csvSplitStream = require('csv-split-stream');
 var mkdirp = require('mkdirp');
 var request = require('request');
+var path = require('path');
 
 
 document.addEventListener('DOMContentLoaded', function () {
