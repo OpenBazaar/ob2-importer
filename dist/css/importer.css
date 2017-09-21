@@ -1,3 +1,20 @@
 .pane-importer {
   padding: 10px;
 }
+
+label {
+  font-weight: bold;
+}
+
+.form-error {
+  color: red;
+  font-weight: bold;
+  font-style: italic;
+}
+
+#listings-imported, #listings-processed {
+  font-style: italic;
+  color: green;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
