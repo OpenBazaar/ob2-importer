@@ -6,6 +6,12 @@ label {
   font-weight: bold;
 }
 
+p {
+  padding:5px;
+  border:1px solid #999999;
+  background: #dddddd;
+}
+
 .form-error {
   color: red;
   font-weight: bold;
