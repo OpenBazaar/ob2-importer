@@ -189,7 +189,55 @@ document.addEventListener('DOMContentLoaded', function () {
         active_line++;
         document.getElementById('listings-imported').innerHTML = active_line + " listings processed";
       })
+      .on("end", function() {
+        // Import into OpenBazaar 2.0
+        var ob2_ip = document.querySelector('#ob2-ip-address').value || '127.0.0.1';
+        var ob2_port = document.querySelector('#ob2-port').value || 4002;
+
+        fs.readdir("processed", function(err, files) {
+
+          var csv_files = [];
+          files.forEach( function(file, index) {
+            console.log('File: '+file);
+            csv_files.push(file);
+          });
+
+          function importFiles(file) {
+
+            document.getElementById('listings-imported').innerHTML = "Importing listings...";
+
+            var formData = {
+              file: fs.createReadStream("processed/" + file)
+            }
+
+            var proto = (document.querySelector('#ob2-ssl').checked) ? 'https://' : 'http://';
+
+            request.post({
+               headers: {'content-type' : 'multipart/form-data'},
+               url: proto + ob2_ip + ':' + ob2_port + '/ob/importlistings',
+               formData: formData
+             }, function(error, response, body){
+               // Handle errors
+               if(error) {
+                 console.log(error);
+                 document.getElementById('listings-imported').innerHTML = "";
+                 document.getElementById('error-listings-imported').innerHTML = error;
+               } else {
+                 if(csv_files.length > 0) {
+                   importFiles(csv_files.pop());
+                 } else {
+                   document.getElementById('listings-imported').innerHTML = "Listings import completed";
+                 }
+               }
+
+             });
+          }
+          importFiles(csv_files.pop());
+
+         });
+      })
       .pipe(fs.createWriteStream("processed/listings.processed.csv"))
+
   }
 
   document.querySelector('#js-import-listings').addEventListener('click', function (event) {
@@ -203,52 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log("File:", csvfile);
 
     // Move on to process the CSV
-    //processCSV(csvfile);
+    processCSV(csvfile);
 
-    // Import into OpenBazaar 2.0
-    var ob2_ip = document.querySelector('#ob2-ip-address').value || '127.0.0.1';
-    var ob2_port = document.querySelector('#ob2-port').value || 4002;
-
-    fs.readdir("processed", function(err, files) {
-
-      var csv_files = [];
-      files.forEach( function(file, index) {
-        console.log('File: '+file);
-        csv_files.push(file);
-      });
-
-      function importFiles(file) {
-
-        document.getElementById('listings-imported').innerHTML = "Importing listings...";
-
-        var formData = {
-          file: fs.createReadStream("processed/" + file)
-        }
-
-        var proto = (document.querySelector('#ob2-ssl').checked) ? 'https://' : 'http://';
-
-        request.post({
-           headers: {'content-type' : 'multipart/form-data'},
-           url: proto + ob2_ip + ':' + ob2_port + '/ob/importlistings',
-           formData: formData
-         }, function(error, response, body){
-           // Handle errors
-           if(error) {
-             console.log(error);
-             document.getElementById('listings-imported').innerHTML = "";
-             document.getElementById('error-listings-imported').innerHTML = error;
-           } else {
-             if(csv_files.length > 0) {
-               importFiles(csv_files.pop());
-             } else {
-               document.getElementById('listings-imported').innerHTML = "Listings import completed";
-             }
-           }
-
-         });
-      }
-      importFiles(csv_files.pop());
-
-     });
   });
 });
