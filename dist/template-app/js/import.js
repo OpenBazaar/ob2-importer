@@ -19,6 +19,12 @@ document.addEventListener('DOMContentLoaded', function () {
     case 'darwin':
       var csv_directory = os.homedir() + "/Library/Application Support/OpenBazaar";
       break;
+    case 'win32':
+      var csv_directory = path.join(process.env.APPDATA, "OpenBazaar");
+      break;
+    case 'linux':
+      var csv_directory = os.homedir() + "/.openbazaar";
+      break;
   }
 
   /*********************
