@@ -1,0 +1,33 @@
+language: node_js
+sudo: true
+os:
+- linux
+- osx
+cache:
+  directories:
+  - node_modules
+node_js:
+- '5'
+script:
+- if [ -n "$TRAVIS_TAG" ]; then ./build.sh; fi
+# deploy:
+#   provider: releases
+#   api_key: "$GITHUB_TOKEN"
+#   file_glob: true
+#   file:
+#     - "dist/win32/*.exe"
+#     - "dist/win32/*.nupkg"
+#     - "dist/win32/RELEASES"
+#     - "dist/win64/*.exe"
+#     - "dist/win64/*.nupkg"
+#     - "dist/win64/RELEASES-x64"
+#     - "dist/osx/*.dmg"
+#     - "dist/osx/*.zip"
+#     - "dist/linux32/*.deb"
+#     - "dist/linux64/*.deb"
+#     - "dist/linux32/*.rpm"
+#     - "dist/linux64/*.rpm"
+#   skip_cleanup: true
+#   all_branches: true
+#   on:
+#     tags: true
