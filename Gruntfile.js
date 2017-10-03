@@ -139,8 +139,55 @@ module.exports = function(grunt) {
           port: 8000
         }
       }
-    }
-
+    },
+    'electron-installer-debian': {
+      options: {
+        productName: 'OpenBazaar 2 Importer',
+        name: 'openbazaar2importer',
+        arch: 'amd64',
+        version: '1.0.0',
+        bin: 'openbazaar2importer',
+        maintainer: 'OpenBazaar <project@openbazaar.org>',
+        rename(dest) {
+          return `${dest}<%= name %>_<%= version %>_<%= arch %>.deb`;
+        },
+        productDescription: 'Import tool for OpenBazaar 2',
+        lintianOverrides: [
+          'changelog-file-missing-in-native-package',
+          'executable-not-elf-or-script',
+          'extra-license-file',
+        ],
+        icon: 'imgs/icon.png',
+        categories: ['Utility'],
+        priority: 'optional',
+      },
+      'app-with-asar': {
+        src: 'temp-linux64/openbazaar2importer-linux-x64/',
+        dest: 'build-linux64/',
+        rename(dest) {
+          return path.join(dest, '<%= name %>_<%= arch %>.deb');
+        },
+      },
+    },
+    'create-windows-installer': {
+      x32: {
+        appDirectory: grunt.option('appdir'),
+        outputDirectory: grunt.option('outdir'),
+        name: 'OpenBazaar2Importer',
+        productName: 'OpenBazaar2Importer',
+        authors: 'OpenBazaar',
+        owners: 'OpenBazaar',        
+        exe: 'OpenBazaar2Importer.exe',
+        description: 'OpenBazaar 2 Import Tool',
+        version: grunt.option('obversion') || '',
+        title: 'OpenBazaar2 Importer',
+        iconUrl: 'https://www.openbazaar.org/wp-content/uploads/2017/07/windows-icon.ico',
+        setupIcon: 'imgs/windows-icon.ico',
+        skipUpdateIcon: true,
+        loadingGif: 'imgs/windows-loading.gif',
+        noMsi: true,
+      },
+    },
   });
 
 
@@ -152,6 +199,7 @@ module.exports = function(grunt) {
   grunt.registerTask('dist-css', ['sass', 'usebanner', 'cssmin']);
   grunt.registerTask('dist', ['clean', 'dist-css', 'copy']);
   grunt.registerTask('server', ['dist', 'jekyll:docs', 'connect', 'watch']);
-
-  grunt.registerTask('default', ['dist']);
+  grunt.loadNpmTasks('grunt-electron-installer-debian');
+  grunt.loadNpmTasks('grunt-electron-installer');
+  grunt.registerTask('default', ['dist','electron-installer-debian']);
 };
