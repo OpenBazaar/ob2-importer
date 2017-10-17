@@ -6,17 +6,20 @@ cache:
   directories:
   - node_modules
 node_js:
-- '5'
+  - '5'
 script:
-- if [ -n "$TRAVIS_TAG" ]; then ./build.sh; fi
- deploy:
-   provider: releases
-   api_key: "$GITHUB_TOKEN"
-   file_glob: true
-   file:
-     - "build/osx/*"
-     - "build/win32/*"
-   skip_cleanup: true
-   all_branches: true
-   on:
-     tags: true
+  - if [ -n "$TRAVIS_TAG" ]; then ./build.sh; fi
+deploy:
+ provider: releases
+ api_key: "$GITHUB_TOKEN"
+ file_glob: true
+ file:
+   - "build/osx/*"
+   - "build/win32/*"
+ skip_cleanup: true
+ all_branches: true
+ on:
+   tags: true
+env:
+global:
+ - secure: "gthz0oLixMB8BcCsODraPKx9vJGunI50tXOw8T4gmpTtRpW6R6t0NlRwcFOBfbVhtxSxLhd1jZh8wQgh5tlIbKoMbsvbEwJll+9M3JaEYNOtmG3MUjL3T/7RCGZK0evAqmaLZpeNbR+yTbRFEvXpKSyQQ3X0kmELwZp01faQni1mm19mrylwOL4h5VXQbpIuOnb5BPyaGNsVKdAJpFS+4mfl2CCdwvPu4qI6lfqQ0DByf0M/pMGXr5cTZxO1CAjlhwTDy8CsmhQsNKzPEK35qlEED/ROguNEdFmQK+UWA+zZ4rh3Ns8TIv/g+uLyAvaHsEtMNPd2J6NwMnK/agR1shll3K1BAC5UIE138Lak+HvCj2hzfBZfd9umDojjDAirRUlSM+q/qsFlH5XVyiela9WzxPu7ytotLaqxXbQR9Zjzezo8eskLlDIxkzOL+OzuaO+o4cLA50qsbfD6PbKDZoPzhufaqfARMSxmtscwHrTZHQedrQaSfAd7XudN8OBlmdrJ8UF/nED72+Hm6xWVuVoQehFf5G4dWGsoUjf30VG63hD1Xsd3XYXLRzIfKnJIiJBBdw1ET3dMEEQWxLaXkfpcV1MPgPgU74l1eorMmyq79LKwH1z86qPvtMtHLwNg4QDfV5vtGtFv1qJJA3ClpAoO3FWL2v3JAGiV4twLwto="
