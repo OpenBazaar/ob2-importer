@@ -133,7 +133,7 @@ case "$TRAVIS_OS_NAME" in
     mkdir build/win32
 
     echo 'Running Electron Packager...'
-    electron-packager ./dist OpenBazaar2Importer --out=build --protocol-name=OpenBazaar --win32metadata.ProductName="OpenBazaar2Importer" --win32metadata.CompanyName="OpenBazaar" --win32metadata.FileDescription='Import tool for OpenBazaar 2' --win32metadata.OriginalFilename=OpenBazaar2Importer.exe --protocol=ob --platform=win32 --arch=ia32 --icon=imgs/openbazaar2.ico --electron-version=${ELECTRONVER} --overwrite
+    electron-packager ./dist/ob2importer OpenBazaar2Importer --out=build --protocol-name=OpenBazaar --win32metadata.ProductName="OpenBazaar2Importer" --win32metadata.CompanyName="OpenBazaar" --win32metadata.FileDescription='Import tool for OpenBazaar 2' --win32metadata.OriginalFilename=OpenBazaar2Importer.exe --protocol=ob --platform=win32 --arch=ia32 --icon=imgs/openbazaar2.ico --electron-version=${ELECTRONVER} --overwrite
 
     echo 'Building Installer...'
     grunt create-windows-installer --obversion=$PACKAGE_VERSION --appdir=build/OpenBazaar2Importer-win32-ia32 --outdir=build/win32
@@ -179,7 +179,7 @@ case "$TRAVIS_OS_NAME" in
     npm install -g electron-installer-dmg
 
     echo 'Running Electron Packager...'
-    electron-packager ./dist OpenBazaar2Importer --out=build -app-category-type=public.app-category.business --platform=darwin --arch=x64 --icon=imgs/openbazaar2.icns --electron-version=${ELECTRONVER} --overwrite --app-version=$PACKAGE_VERSION
+    electron-packager ./dist/ob2importer OpenBazaar2Importer --out=build -app-category-type=public.app-category.business --platform=darwin --arch=x64 --icon=imgs/openbazaar2.icns --electron-version=${ELECTRONVER} --overwrite --app-version=$PACKAGE_VERSION
 
     # echo 'Codesign the .app'
     # codesign --force --deep --sign "$SIGNING_IDENTITY" build/OpenBazaar2-darwin-x64/OpenBazaar2.app

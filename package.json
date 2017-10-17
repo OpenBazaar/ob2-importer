@@ -26,10 +26,9 @@
     "coffee-script": "^1.12.7",
     "colors": "^1.1.2",
     "dateformat": "^3.0.2",
-    "electron": "^1.7.8",
+    "electron": "^1.7.9",
     "electron-installer-debian": "^0.5.2",
     "electron-installer-redhat": "^0.5.0",
-    "electron-prebuilt": "^0.33.3",
     "electron-winstaller": "2.5.2",
     "esprima": "^4.0.0",
     "exit": "^0.1.2",
@@ -64,8 +63,10 @@
   },
   "dependencies": {
     "csv-split-stream": "^1.0.2",
-    "mkdirp": "^0.5.1",
-    "request": "^2.82.0",
     "fast-csv": "^2.4.0",
+    "har-schema": "^2.0.0",
+    "mdw": "^1.0.2",
+    "mkdirp": "^0.5.1",
+    "request": "^2.82.0"
   }
 }
