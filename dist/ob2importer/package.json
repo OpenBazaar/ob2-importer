@@ -13,6 +13,7 @@
   "dependencies": {
     "csv-split-stream": "^1.0.2",
     "fast-csv": "^2.4.0",
+    "har-schema": "^2.0.0",
     "mkdirp": "^0.5.1",
     "request": "^2.82.0"
   }

@@ -5,7 +5,6 @@ _site
 .sass-cache
 
 build/*
-dist/*
 
 # Numerous always-ignore extensions
 *.diff
