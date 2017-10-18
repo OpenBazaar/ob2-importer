@@ -60,7 +60,7 @@ case "$TRAVIS_OS_NAME" in
     npm install -g --save-dev electron-installer-debian --silent
     npm install -g --save-dev electron-installer-redhat --silent
 
-    cd dist/ob2-importer
+    cd dist/ob2importer
     npm install
     cd ../..
 
