@@ -1,0 +1,22 @@
+{
+  "productName": "OpenBazaar Importer",
+  "name": "openbazaar2importer",
+  "version": "1.0.0",
+  "bin": "openbazaar2importer",
+  "description": "Transfer tool for OpenBazaar 2.0 listings",
+  "maintainer": "OpenBazaar <project@openbazaar.org>",
+  "arch": "i386",
+  "src": "build/openbazaar2importer-linux-ia32/",
+  "dest": "build/linux",
+  "productDescription": "Transfer tool for OpenBazaar 2.0 listings",
+  "intianOverrides": [
+    "changelog-file-missing-in-native-package",
+    "executable-not-elf-or-script",
+    "extra-license-file"
+  ],
+  "icon": "imgs/icon.png",
+  "categories": [
+    "Utility"
+  ],
+  "priority": "optional"
+}

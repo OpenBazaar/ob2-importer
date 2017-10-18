@@ -53,8 +53,7 @@ case "$TRAVIS_OS_NAME" in
     echo 'Building Linux 32-bit Installer....'
 
     echo 'Making build directories'
-    mkdir build/linux32
-    mkdir build/linux64
+    mkdir build/linux
 
     echo 'Install npm packages for Linux'
     npm install -g --save-dev electron-installer-debian --silent
@@ -66,51 +65,16 @@ case "$TRAVIS_OS_NAME" in
     # Ensure fakeroot is installed
     sudo apt-get install fakeroot
 
-    # Retrieve Latest Server Binaries
-    sudo apt-get install jq
-    cd temp/
-    curl -u $GITHUB_USER:$GITHUB_TOKEN -s https://api.github.com/repos/OpenBazaar/openbazaar-go/releases > release.txt
-    cat release.txt | jq -r ".[0].assets[].browser_download_url" | xargs -n 1 curl -L -O
-    cd ..
-
-    APPNAME="openbazaar2"
+    APPNAME="openbazaar2importer"
 
     echo "Packaging Electron application"
-    electron-packager . ${APPNAME} --platform=linux --arch=ia32 --version=${ELECTRONVER} --overwrite --prune --out=build
-
-    echo 'Move go server to electron app'
-    mkdir build/${APPNAME}-linux-ia32/resources/openbazaar-go/
-    cp -rf temp/openbazaar-go-linux-386 build/${APPNAME}-linux-ia32/resources/openbazaar-go
-    mv build/${APPNAME}-linux-ia32/resources/openbazaar-go/openbazaar-go-linux-386 build/${APPNAME}-linux-ia32/resources/openbazaar-go/openbazaard
-    chmod +x build/${APPNAME}-linux-ia32/resources/openbazaar-go/openbazaard
+    electron-packager dist/ob2importer ${APPNAME} --platform=linux --arch=ia32 --version=${ELECTRONVER} --overwrite --prune --out=build
 
     echo 'Create debian archive'
     electron-installer-debian --config .travis/config_ia32.json
 
     echo 'Create RPM archive'
     electron-installer-redhat --config .travis/config_ia32.json
-
-    echo 'Sign the installer'
-
-    echo 'Building Linux 64-bit Installer....'
-
-    echo "Packaging Electron application"
-    electron-packager . ${APPNAME} --platform=linux --arch=x64 --version=${ELECTRONVER} --overwrite --prune --out=build
-
-    echo 'Move go server to electron app'
-    mkdir build/${APPNAME}-linux-x64/resources/openbazaar-go/
-    cp -rf temp/openbazaar-go-linux-amd64 build/${APPNAME}-linux-x64/resources/openbazaar-go
-    mv build/${APPNAME}-linux-x64/resources/openbazaar-go/openbazaar-go-linux-amd64 build/${APPNAME}-linux-x64/resources/openbazaar-go/openbazaard
-    chmod +x build/${APPNAME}-linux-x64/resources/openbazaar-go/openbazaard
-
-    echo 'Create debian archive'
-    electron-installer-debian --config .travis/config_amd64.json
-
-    echo 'Create RPM archive'
-    electron-installer-redhat --config .travis/config_amd64.json
-
-    echo 'Sign the installer'
-
 
     ;;
 
