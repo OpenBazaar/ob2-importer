@@ -53,11 +53,16 @@ case "$TRAVIS_OS_NAME" in
     echo 'Building Linux 32-bit Installer....'
 
     echo 'Making build directories'
-    mkdir build/linux
+    mkdir build/linux32
+    mkdir build/linux64
 
     echo 'Install npm packages for Linux'
     npm install -g --save-dev electron-installer-debian --silent
     npm install -g --save-dev electron-installer-redhat --silent
+
+    cd dist/ob2-importer
+    npm install
+    cd ../..
 
     # Install rpmbuild
     sudo apt-get install rpm
@@ -75,6 +80,17 @@ case "$TRAVIS_OS_NAME" in
 
     echo 'Create RPM archive'
     electron-installer-redhat --config .travis/config_ia32.json
+
+    echo 'Building Linux 64-bit Installer....'
+
+    echo "Packaging Electron application"
+    electron-packager dist/ob2importer ${APPNAME} --platform=linux --arch=x64 --version=${ELECTRONVER} --overwrite --prune --out=build
+
+    echo 'Create debian archive'
+    electron-installer-debian --config .travis/config_amd64.json
+
+    echo 'Create RPM archive'
+    electron-installer-redhat --config .travis/config_amd64.json
 
     ;;
 
