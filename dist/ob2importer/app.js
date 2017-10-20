@@ -5,7 +5,6 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 var mainWindow = null;
 
 ipcMain.on('import-from-ob1-submission', function (event, csvfile, ip, port) {
-    console.log('test');
     console.log(csvfile, ip, port);
 });
 
@@ -38,9 +37,7 @@ app.on('ready', function() {
   mainWindow.once('ready-to-show', () => mainWindow.show());
 
   // Open the DevTools.
-  mainWindow.openDevTools();
-
-
+  //mainWindow.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {

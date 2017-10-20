@@ -2335,3 +2335,18 @@ td:last-child {
   flex: none;
   padding: 3px 10px;
 }
+
+.pane-importer {
+
+}
+.pane-importer p {
+  padding:10px;
+  background-color: #efefef;
+  border:1px solid #bbbbbb;
+}
+.form-error {
+  color: #ff0000;
+}
+#listings-processed, #listings-imported {
+  color: #00CC00;
+}

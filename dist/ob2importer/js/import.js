@@ -100,6 +100,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function processCSV(csvfile) {
 
+    // Check file type
+    var re = /(\.csv)$/i;
+    if(!re.exec(csvfile))
+    {
+      document.getElementById('error-listings-imported').innerHTML = 'Please only select CSV files.';
+      enableImportButton();
+      return;
+    }
+
     rmdirSyncForce = function(path) {
       var files, file, fileStats, i, filesLength;
       if (path[path.length - 1] !== '/') {
@@ -208,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var formData = {
               file: fs.createReadStream("processed/" + file)
-            }
+            };
 
             var proto = (document.querySelector('#ob2-ssl').checked) ? 'https://' : 'http://';
 
@@ -227,6 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
                    importFiles(csv_files.pop());
                  } else {
                    document.getElementById('listings-imported').innerHTML = "Listings import completed";
+                   enableImportButton();
                  }
                }
 
@@ -242,12 +252,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.querySelector('#js-import-listings').addEventListener('click', function (event) {
 
+    // Disable import button until finished or errored
+    document.getElementById('js-import-listings').disabled = true;
+    document.getElementById('js-import-listings').style.opacity = 0.5;
+
     document.getElementById('listings-processed').innerHTML = "";
     document.getElementById('listings-imported').innerHTML = "";
     document.getElementById('error-listings-imported').innerHTML = "";
     document.getElementById('error-listings-processed').innerHTML = "";
 
-    var csvfile = document.getElementById("csv-file").files[0].path;
+    var csvfile;
+
+    try {
+        csvfile = document.getElementById("csv-file").files[0].path;
+    } catch(err) {
+        document.getElementById('error-listings-imported').innerHTML = 'Please specify a file to be imported below.';
+        enableImportButton();
+        return;
+    }
+
     console.log("File:", csvfile);
 
     // Move on to process the CSV
@@ -255,3 +278,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   });
 });
+
+function enableImportButton() {
+    document.getElementById('js-import-listings').disabled = false;
+    document.getElementById('js-import-listings').style.opacity = 1;
+}
