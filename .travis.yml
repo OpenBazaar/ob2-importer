@@ -23,6 +23,10 @@ deploy:
  api_key: "$GITHUB_TOKEN"
  file_glob: true
  file:
+   - "build/linux32/*.deb"
+   - "build/linux32/*.rpm"
+   - "build/linux64/*.deb"
+   - "build/linux64/*.rpm"
    - "build/osx/*.dmg"
    - "build/osx/*.zip"
    - "build/win32/*.exe"
