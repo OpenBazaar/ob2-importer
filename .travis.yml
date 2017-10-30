@@ -1,8 +1,14 @@
-language:
-  - objective-c
+language: node_js
 sudo: true
 os:
-  - osx
+- linux
+- osx
+cache:
+  directories:
+  - node_modules
+  - "/usr/local/Cellar"
+node_js:
+- '5'
 env:
   global:
     - NODE_VERSION="0.8"
