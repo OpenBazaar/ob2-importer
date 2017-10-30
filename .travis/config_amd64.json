@@ -6,9 +6,9 @@
   "bin": "openbazaar2importer",
   "description": "Transfer tool for OpenBazaar 2.0 listings",
   "maintainer": "OpenBazaar <project@openbazaar.org>",
-  "arch": "i386",
-  "src": "build/openbazaar2importer-linux-ia32/",
-  "dest": "build/linux32",
+  "arch": "amd64",
+  "src": "build/openbazaar2importer-linux-x64/",
+  "dest": "build/linux64",
   "productDescription": "Transfer tool for OpenBazaar 2.0 listings",
   "intianOverrides": [
     "changelog-file-missing-in-native-package",
