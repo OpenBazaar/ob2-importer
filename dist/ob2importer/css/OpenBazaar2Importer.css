@@ -2350,3 +2350,6 @@ td:last-child {
 #listings-processed, #listings-imported {
   color: #00CC00;
 }
+.connection-form > div {
+	padding:5px;
+}

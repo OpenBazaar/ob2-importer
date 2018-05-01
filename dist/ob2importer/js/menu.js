@@ -22,7 +22,9 @@ menu.append(new MenuItem({
 
 // Add the listener
 document.addEventListener('DOMContentLoaded', function () {
+/*
   document.querySelector('.js-context-menu').addEventListener('click', function (event) {
     menu.popup(remote.getCurrentWindow());
   })
+*/
 })

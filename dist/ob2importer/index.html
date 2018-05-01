@@ -12,37 +12,69 @@
     <!-- Javascript -->
     <script src="js/menu.js" charset="utf-8"></script>
     <script src="js/import.js" charset="utf-8"></script>
+    <script src="https://cdn.shopify.com/s/assets/external/app.js"></script>
+    
+    
   </head>
   <body>
     <div class="window">
 
-      <!-- .toolbar-header sits at the top of your app -->
-      <!--<header class="toolbar toolbar-header">-->
-        <!--<h1 class="title">OpenBazaar 2.0 Importer Tool</h1>-->
-      <!--</header>-->
-
-      <!-- Your app's content goes inside .window-content -->
       <div class="window-content">
         <div class="pane-group">
           <div class="pane pane-sm sidebar">
             <nav class="nav-group">
               <h5 class="nav-group-title">Import from</h5>
-              <span class="nav-group-item active">
-                <span class="icon icon-home"></span>
-                OpenBazaar 1.0
+              <span class="nav-group-item active" data-target="ob" style="display: flex;">
+                <div style="background-image: url('imgs/ob.png');background-size:cover;width:20px;height:20px;"></div>
+                <div style="flex:1;box-sizing: border-box;padding-left:7px;">OpenBazaar (1.0)</div>
               </span>
-              <!--<span class="nav-group-item">-->
-                <!--<span class="icon icon-light-up"></span>-->
-                <!--eBay-->
-              <!--</span>-->
-              <!--<span class="nav-group-item">-->
-                <!--<span class="icon icon-light-up"></span>-->
-                <!--Amazon-->
-              <!--</span>-->
+              <span class="nav-group-item" data-target="shopify" style="display: flex;">
+                <div style="background-image: url('imgs/shopify.png');background-size:cover;width:20px;height:20px;"></div>
+                <div style="flex:1;box-sizing: border-box;padding-left:7px;">Shopify</div>
+              </span>
             </nav>
           </div>
+          
+          <div id="pane-shopify" class="pane pane-importer padding-10" style="display: none;">
+	          <h2>Shopify</h2>
+	          
+	          <p>Clicking the button below will pull listings from your Shopify storefront and convert them into a comma-separated values (CSV) file so that you can import them directly into OpenBazaar.</p>
+	          
+	          <div style="display: flex">
+	          	<div style="flex:1;box-sizing: border-box;padding-right:10px;"><input type="text" id="input-storefront" name="storefront" value="" placeholder="Enter Shopify storefront id" style="padding:3px;width:100%;"/></div>
+			  	<div style="width:auto;"><button onclick="authToShopify(event);">Sync Listings from Shopify</button></div>
+	          </div>
+	          
+	          <div style="font-size:20px;font-weight: bolder;margin:10px 0;">OpenBazaar Settings</div>
+	          
+	          <div class="connection-form" style="display: flex;flex-wrap: wrap">
+		          <div style="display: flex;width:100%;">
+			          <div style="width:160px;">IP Address:</div>
+			          <div style="flex:1;"><input type="text" id="shopify-ip-address" name="ip-address" class="pure-u-23-24" value="127.0.0.1"/></div>
+		          </div>
+		          <div style="display: flex;width:100%;">
+			          <div style="width:160px;">Port:</div>
+			          <div style="flex:1;"><input type="text" id="shopify-port" name="port" class="pure-u-8-24" value="4002"/></div>
+		          </div>
+		          <div style="display: flex;width:100%;">
+			          <div style="width:160px;">Authentication Cookie:</div>
+			          <div style="flex:1;"><input type="text" id="shopify-authcookie" name="auth_cookie" class="pure-u-23-24" value="" placeholder=""/></div>
+		          </div>
+		          <div style="display: flex;width:100%;">
+			          <div style="width:160px;">SSL:</div>
+			          <div style="flex:1;"><input type="checkbox" id="shopify-ssl" name="ob2-ssl" class="pure-u-8-24"/></div>
+		          </div>
+	          </div>
+	          
+	          <div id="shopify-results" style="margin-top:10px;height:300px;width:100%;padding:5px;border:1px solid #dddddd;background-color:#efefef;overflow: auto;"></div>
+	          
+	          
+	          
+	          
+	          	       
+          </div>
 
-          <div class="pane pane-importer padding-10">
+          <div id="pane-ob" class="pane pane-importer padding-10">
 
             <h2>Migrate OpenBazaar to OpenBazaar 2</h2>
 
@@ -101,6 +133,10 @@
                   <input type="text" id="ob2-port" name="port" class="pure-u-8-24" value="4002"/>
                 </div>
                 <div class="pure-u-1-2">
+                  <label for="auth_cookie">Authentication Cookie</label>
+                  <input type="text" id="ob2-authcookie" name="auth_cookie" class="pure-u-23-24" value="" placeholder=""/>
+                </div>
+                <div class="pure-u-1-2">
                   <label for="ob2-ssl">SSL
                     <input type="checkbox" id="ob2-ssl" name="ob2-ssl" class="pure-u-8-24"/>
                   </label>
@@ -115,6 +151,8 @@
 
           </div>
         </div>
+        
+        
       </div>
     </div>
   </body>
