@@ -361,6 +361,9 @@ function retrieveShopifyListings() {
 					images_array.push(image.src);
 				});							
 
+				listing.body_html = listing.body_html.replace(/(\r\n|\n|\r)/gm,"");
+				listing.body_html = listing.body_html.replace(/"/g,'""');
+
 				var data = new Array(
 					Array('string','PHYSICAL_GOOD'),
 					Array('string', shopInfo.shop.currency),
@@ -738,12 +741,13 @@ function processCSV(csvfile, ip, port, authcookie, ssl) {
       .pipe(csv.parse({headers: true}))
       .pipe(csv.format({headers: true}))
       .transform(function(row) {
+        
         return {
           contract_type: row["contract_type"],
           pricing_currency: row["pricing_currency"],
           language: row["language"],
           title: row["title"].substr(0,140),
-          description: row["description"].replace(/(\r\n|\n|\r)/gm,""),
+          description: row["description"].replace(/(\r\n|\n|\r)/gm,"").replace(/"/g, '\"'),
           processing_time: row["processing_time"],
           price: row["price"],
           nsfw: row["nsfw"],

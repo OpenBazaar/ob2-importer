@@ -61,7 +61,7 @@ ipcMain.on('auth-to-shopify', function (event, shopifyID) {
 		        var results = JSON.parse(body);
 		        event.sender.send('shopify-results', results.access_token);
 		    } else {
-			    console.log(response.statusCode);
+			    console.log('Error getting access token: ', response.statusCode);
 		    }
 		})
 
@@ -118,7 +118,7 @@ app.on('ready', function() {
   mainWindow.once('ready-to-show', () => mainWindow.show());
 
   // Open the DevTools.
-  //mainWindow.openDevTools();
+  mainWindow.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
